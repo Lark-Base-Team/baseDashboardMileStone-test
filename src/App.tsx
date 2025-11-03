@@ -491,14 +491,22 @@ export default function App() {
 
     }, [])
 
-  const updateConfig = (res: any) => {
-    const { customConfig } = res;
+ const updateConfig = (res: any) => {
+    const { customConfig, dataConditions } = res;
+    const baseToken = dataConditions?.[0]?.baseToken
     if (customConfig) {
       setConfig((pre) => {
-        return {
+        const tempConfig = {
           ...pre,
-          ...customConfig
+          ...customConfig,
         }
+        return {
+          ...tempConfig,
+          dateInfo: {
+            ...tempConfig.dateInfo,
+            baseToken
+          }
+        };
       });
       setTimeout(() => {
         // 预留3s给浏览器进行渲染，3s后告知服务端可以进行截图了
@@ -506,6 +514,7 @@ export default function App() {
       }, 3000);
     }
   }
+
 
   React.useEffect(() => {
     if (isCreate) {
