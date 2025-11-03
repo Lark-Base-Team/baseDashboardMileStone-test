@@ -492,12 +492,21 @@ export default function App() {
     }, [])
 
   const updateConfig = (res: any) => {
-    const { customConfig } = res;
+    const { customConfig, dataConditions } = res;
+    const baseToken = dataConditions?.[0]?.baseToken;
     if (customConfig) {
       setConfig((pre) => {
-        return {
+        const tempConfig = {
           ...pre,
           ...customConfig
+        }
+        return {
+          ...tempConfig,
+          dateInfo: {
+            ...tempConfig.dateInfo,
+            baseToken
+          }
+
         }
       });
       setTimeout(() => {
